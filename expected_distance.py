@@ -28,7 +28,7 @@ def prior_prob(model, distances):
 
 def likelihood_estimation(alignmentMatrix, repl_matrices, equilibrium_freq):
     """ Takes the difference position matrix for two sequences and
-        a list of replacement matrices. returns a list of values
+        a list of replacement matrices. Returns a list of values
         correspoding to the likelihood. """
     likelihood = []
     freqs = (np.prod(equilibrium_freq)) #product of frequencies πa1 * πa2 * ...
