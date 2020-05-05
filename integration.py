@@ -43,7 +43,7 @@ def simpson(y_values, x_values, pnr):
     return (deltax/3)*sum
 
 def plot_integration(x_values, y_values, name, ylabel):
-    plt.plot(x_values,y_values, label = "Integration")
+    plt.plot(x_values,y_values, label = "f")
     plt.xlabel('distances')
     plt.ylabel(ylabel)
     plt.title(name)

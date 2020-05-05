@@ -45,7 +45,7 @@ def run_testcase(tree):
 exp_dist.plot_likelihood_function = False # Set as True to plot the likelihood function
 exp_dist.plot_exp_dist = False # Set as True to plot exp
 plot_tree = True  #Set as True to plot Newick Tree
-
+exp_dist.plot_posterior = False
 
 run_testcase(0) # cases[0] -> 'W'
 #run_testcase(1) # cases[0] -> 'X'

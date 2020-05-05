@@ -5,6 +5,7 @@ from text import color
 
 integration_method = simpson
 plot_likelihood_function = False
+plot_posterior = False
 plot_exp_dist = False
 print_maximum_likelihood = False
 
@@ -52,30 +53,33 @@ def expected_dist(filename, model):
 
     for i in range(len(all_alignments)):
 
-        aa_map = all_alignments[i][0]
+        aa_map, distances, freq_appearence = all_alignments[i] # freq =[π_a,  π_r, ...]
 
         #distances = [x for x in np.arange(0, 3, 0.005)]
-        distances = all_alignments[i][1]
-        #print("Number of discretization points", len(distances))
 
-        freq_appearence = all_alignments[i][2] # [π_a,  π_r, ...]
+        #print("Number of discretization points", len(distances))
 
         repl_matrices = prior_prob(model, distances) # [e^Qd1, e^Qd2, ...]
         likelihood = likelihood_estimation(aa_map, repl_matrices, freq_appearence) # [Pr(a,b|d1), Pr(a,b|d2), ..]
-        total_llh = (integrate_values(integration_method, distances, likelihood)) # ∑ Pr(a,b|d)
+        norm_constant = (integrate_values(integration_method, distances, likelihood)) # ∑ Pr(a,b|d)
 
-        posterior_dist = np.multiply(distances, likelihood) # [d1*Pr(d1|a,b), d2*Pr(d2|a,b), ...]
+        posterior_mul_dist = np.multiply(distances, likelihood) # [d1*Pr(d1|a,b), d2*Pr(d2|a,b), ...]
 
-        expected_distance = (1/total_llh)*(integrate_values(integration_method, distances, posterior_dist))
+        expected_distance = (1/norm_constant)*(integrate_values(integration_method, distances, posterior_mul_dist))
         print("Expected distance for "+color.BOLD+str(names[i])+color.END+" is ",
         color.BOLD+str(expected_distance)+color.END)
 
 
+
         if plot_likelihood_function:
-            plot_integration(distances, np.multiply(likelihood, 1/total_llh), "Distances: "+str(names[i]), 'Pr(d|a,b)')
+            plot_integration(distances, likelihood, "Likelihood function: "+str(names[i]), 'Pr(d|a,b)')
+
+        if plot_posterior:
+            plot_integration(distances, np.multiply(likelihood, 1/norm_constant), "Posterior: "+str(names[i]), 'Pr(d|a,b) / ∑ Pr(d|a,b)')
+
 
         if print_maximum_likelihood:
             print("ML/MAP = argmax(P(d|a,b)) =", distances[likelihood.index(np.max(likelihood))])
 
         if plot_exp_dist:
-            plot_integration(distances, np.multiply(posterior_dist, 1/total_llh), "test", 'd*Pr(d|a,b)')
+            plot_integration(distances, np.multiply(posterior_mul_dist, 1/norm_constant), "Posterior mean"+str(names[i]), 'd*Pr(d|a,b)')
