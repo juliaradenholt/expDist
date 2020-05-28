@@ -45,7 +45,7 @@ CPREV = m.cpREV()
 MTART = m.mtArt()
 MTREV = m.MtREV()
 
-sub_models = [WAG, LG, PAM, BLOSUM, JTT, CPREV, MTART, MTREV]
+sub_models = [WAG, LG, PAM, JTT]
 
 def readFasta(filename, model):
     """ Reads a file with FASTA format and returns
@@ -73,6 +73,7 @@ def initializeSequenceData(s1, s2, model):
             mutations += 1
     pdistance = mutations/len(s1)
     pc = poissonCorrection(pdistance)
+    #print("Poisson correction distance:", pc)
     return aa, dist(pc), equilibrium_freq
 
 def poissonCorrection(p):
@@ -82,11 +83,15 @@ def poissonCorrection(p):
 
 def dist(pc):
     """ Creates a set of distances from a poisson correction distance value."""
+    #print(pc)
     if pc < 0.1:
-        distances = [x for x in np.arange(0, 0.2, 0.005)]
+        distances = [x for x in np.arange(0, 0.2, 0.008)]
+    elif pc < 0.4:
+        distances = [x for x in np.arange(0.4*pc, pc*1.45, 0.015)]
+    elif pc > 1.35:
+        distances = [x for x in np.arange(pc*0.95, 3.1*pc, 0.15)]
     else:
-        distances = [x for x in np.arange(pc*0.7, 2.2*pc, 0.005)]
-        #print(pc*0.7, "-", 2.2*pc)
+        distances = [x for x in np.arange(pc*0.9, pc*1.9, 0.15)]
 
     return distances
 
