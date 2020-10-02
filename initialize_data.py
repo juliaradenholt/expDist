@@ -73,7 +73,7 @@ def initializeSequenceData(s1, s2, model):
             mutations += 1
     pdistance = mutations/len(s1)
     pc = poissonCorrection(pdistance)
-    #print("Poisson correction distance:", pc)
+#    print("Poisson correction distance:", pc)
     return aa, dist(pc), equilibrium_freq
 
 def poissonCorrection(p):
@@ -83,15 +83,19 @@ def poissonCorrection(p):
 
 def dist(pc):
     """ Creates a set of distances from a poisson correction distance value."""
-    #print(pc)
+
+    #distances = [x for x in np.arange(0, 3.0, 0.008)] #uncomment for slow estimator
     if pc < 0.1:
         distances = [x for x in np.arange(0, 0.2, 0.008)]
     elif pc < 0.4:
-        distances = [x for x in np.arange(0.4*pc, pc*1.45, 0.015)]
+        distances = [x for x in np.arange(0.9*pc, pc*1.4, 0.015)]
     elif pc > 1.35:
-        distances = [x for x in np.arange(pc*0.95, 3.1*pc, 0.15)]
+        distances = [x for x in np.arange(pc*0.8, 3, 0.4)]
     else:
-        distances = [x for x in np.arange(pc*0.9, pc*1.9, 0.15)]
+        distances = [x for x in np.arange(pc*0.85, pc*1.8, 0.15)]
+
+#    print(len(distances))
+
 
     return distances
 

@@ -33,7 +33,7 @@ def run_testcase(tree):
     #    print("Sequences from ../"+cases[tree]+"/"+str(nr))
         for model in range(len(exp_dist.sub_models)):
             filename = "./testcases/"+cases[tree]+"/"+str(nr)+"/m"+str_models[model]+".fasta"
-        #    print("\n Reading file.. :", filename)
+            print("\n Reading file.. :", filename)
             exps, stds, max_llhs, names, dists = (exp_dist.expected_dist(filename, exp_dist.sub_models[model], True))
             total_mean = [total_mean[i]+exps[i] for i in range(len(total_mean))]
             data.append([exps, stds, max_llhs, names, dists])
@@ -48,15 +48,15 @@ def run_testcase(tree):
                 filename = "./testcases/"+cases[tree]+"/"+str(nr)+"/m"+str_models[model]+".fasta"
                 exps, stds, max_llhs, names, dists = (exp_dist.expected_dist(filename, exp_dist.sub_models[model], False))
                 long_estim_data.append([exps, stds, max_llhs, names, dists])
-        #analys_data(data, total_mean, tree, long_estim_data)
+    #    analys_data(data, total_mean, tree, long_estim_data)
         requirement_check(data, tree, long_estim_data)
     #    confidence_interval(data, total_mean)
     #    confidence_interval(long_estim_data, total_mean)
 exp_dist.plot_likelihood_function = False # Set as True to plot the likelihood function
 exp_dist.plot_exp_dist = False # Set as True to plot exp
 plot_tree = False  #Set as True to plot Newick Tree
-plot_analysis = True
-exp_dist.plot_posterior = False
+plot_analysis = False  #Set as True to plot analysis compared to slow estimator
+exp_dist.plot_posterior = False  #Set as True to plot posterior distribution
 
 
 run_testcase(0) # cases[0] -> 'W'

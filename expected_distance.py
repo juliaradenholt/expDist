@@ -73,15 +73,19 @@ def expected_dist(filename, model, ExpDist = True):
 
         repl_matrices = prior_prob(model, distances) # [e^Qd1, e^Qd2, ...]
         likelihood = likelihood_estimation(aa_map, repl_matrices, freq_appearence) # [Pr(a,b|d1), Pr(a,b|d2), ..]
+
         norm_constant = (integrate_values(integration_method, distances, likelihood)) # ∑ Pr(a,b|d)
+
         density_function = np.multiply(likelihood, 1/norm_constant)
         posterior_mul_dist = np.multiply(distances, likelihood) # [d1*Pr(d1|a,b), d2*Pr(d2|a,b), ...]
+        exp, std_test = (integrate_values(integration_method, distances, posterior_mul_dist, True))
 
-        expected_distance = (1/norm_constant)*(integrate_values(integration_method, distances, posterior_mul_dist))
-    #    print("Expected distance for "+color.BOLD+str(names[i])+color.END+" is ",
-    #    color.BOLD+str(expected_distance)+color.END)
+        expected_distance = (1/norm_constant)*exp
+
+        print("Expected distance for "+color.BOLD+str(names[i])+color.END+" is ",
+        color.BOLD+str(expected_distance)+color.END)
+
         expected_distances.append(expected_distance)
-
 
 
         if plot_likelihood_function:
@@ -100,13 +104,12 @@ def expected_dist(filename, model, ExpDist = True):
             plot_integration(distances, np.multiply(posterior_mul_dist, 1/norm_constant), "Posterior mean"+str(names[i]), 'd*Pr(d|a,b)')
 
         if print_standard_dev:
-            x = np.add(distances, -1*expected_distances[i]) # x - μ
-            xx = np.power(x,2) # (x - μ)^2
-            post = np.multiply(xx, posterior_mul_dist)
-            std = np.sqrt((1/norm_constant)*(integrate_values(integration_method, distances, post)))
-        #    print("Standard deviation is ",
-        #    color.BOLD+str(std)+color.END)
-            #print("Förslagsvis intervall", (expected_distance-std)/expected_distance, "-", (expected_distance+std)/expected_distance)
+            std = np.sqrt(((1/norm_constant)*std_test)-expected_distance**2)
             standard_deviations.append(std)
+            #print("Standard deviation is ",
+            #color.BOLD+str(std)+color.END)
+            #print("Förslagsvis intervall", (expected_distance-std)/expected_distance, "-", (expected_distance+std)/expected_distance)
+
+
 
     return expected_distances, standard_deviations, maximum_likelihoods, names, all_alignments
