@@ -23,8 +23,12 @@ $ pip install mathlibplot
 ```
 ## Estimate expected values 
 
-In the Python Shell run:
+In the terminal, run 
+```
+python3 run_expdist.py
+```
 
+or in the Python Shell run:
 ```
 import run_expdist.py
 ```
