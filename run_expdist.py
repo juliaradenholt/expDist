@@ -4,7 +4,7 @@ import random
 
 models = { 'Dayhoff':m.Dayhoff(), 'JTT':m.JTT(), 'LG':m.LG(), 'WAG':m.WAG() }
 case= ['W', 'X', 'Y', 'Z']
-models_str = ['Dayhoff', 'JTT', 'LG', 'WAG']
+models_str = ['PAM', 'JTT', 'LG', 'WAG']
 test_case = (random.randint(0, 3))
 test_num = (random.randint(1, 35))
 test_mod = (random.randint(0, 3))
