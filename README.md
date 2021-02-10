@@ -21,5 +21,13 @@ $ pip install numpy
 $ pip install biopython
 $ pip install mathlibplot
 ```
+# Estimate expected values 
 
+In the Python Shell run:
 
+```
+import run_expdist.py
+```
+
+This will allow you to enter a substiution model and a filepath.
+The program will then estimate and print the expected values of the evolutionary distances between the sequences in the file.
