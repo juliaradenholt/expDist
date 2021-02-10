@@ -7,7 +7,7 @@ The project was to implement an efficient estimator for the expected value of ev
 Title: An efficient estimator for expected values of evolutionary distances.
 University: Stockholm University
 
-# Setup 
+## Setup 
 Clone the current version of the project.
 
 ```
@@ -21,7 +21,7 @@ $ pip install numpy
 $ pip install biopython
 $ pip install mathlibplot
 ```
-# Estimate expected values 
+## Estimate expected values 
 
 In the Python Shell run:
 
